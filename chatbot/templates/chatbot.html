@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chatbot Page</title>
+
+    <style>
+        @keyframes blink {
+            0% {
+                border-color: red;
+            }
+            50% {
+                border-color: blue;
+            }
+            100% {
+                border-color: red;
+            }
+        }
+
+        #messenger-button {
+            position: fixed;
+            cursor: grab;
+            padding: 10px;
+            border: 2px solid red; /* Đặt border ở đây để có thể thay đổi màu khi nhấp nháy */
+            background-color: #4CAF50;
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            transition-duration: 0.4s;
+            cursor: pointer;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1), 0 6px 20px rgba(0, 0, 0, 0.1);
+            box-sizing: border-box;
+            bottom: 10px;
+            left: 10px;
+            z-index: 999;
+            width: auto;
+            animation: blink 1s infinite; /* Áp dụng animation blink */
+        }
+
+        #messenger-button:hover {
+            background-color: white;
+            color: black;
+            box-shadow: 0 0 10px rgba(255, 0, 0, 0.7),
+                        0 0 20px rgba(0, 255, 0, 0.7),
+                        0 0 30px rgba(0, 0, 255, 0.7);
+            animation: none; /* Tắt animation khi hover */
+        }
+
+        #messenger-button:active {
+            cursor: grabbing;
+        }
+
+        .dragging {
+            transition: none;
+            cursor: grabbing;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Chatbot container -->
+    <div id="messenger-button" onmousedown="startDragging(event)" ondblclick="openMessenger()">
+        <!-- Chatbot content -->
+        Liên hệ Shop Vũ
+    </div>
+
+    <script>
+        function openMessenger() {
+            window.open('https://www.facebook.com/profile.php?id=100011596179428', '_blank');
+        }
+
+        function startDragging(e) {
+            let messengerButton = document.getElementById('messenger-button');
+            let initialX = e.clientX;
+            let initialY = e.clientY;
+
+            function dragMove(e) {
+                let x = e.clientX - initialX;
+                let y = e.clientY - initialY;
+
+                y = Math.min(Math.max(y, 0), window.innerHeight - messengerButton.offsetHeight);
+                x = Math.min(Math.max(x, 0), window.innerWidth - messengerButton.offsetWidth);
+
+                messengerButton.style.transform = `translate(${x}px, ${y}px)`;
+            }
+
+            function dragEnd() {
+                document.removeEventListener('mousemove', dragMove);
+                document.removeEventListener('mouseup', dragEnd);
+                messengerButton.classList.remove('dragging');
+            }
+
+            document.addEventListener('mousemove', dragMove);
+            document.addEventListener('mouseup', dragEnd);
+            messengerButton.classList.add('dragging');
+
+            e.preventDefault();
+        }
+    </script>
+
+</body>
+</html>
